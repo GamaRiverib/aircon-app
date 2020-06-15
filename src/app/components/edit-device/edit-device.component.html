@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ device && device.uuid ? 'Edit' : 'New' }} device</ion-title>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="device && device.uuid" (click)="remove()">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="save()">
+        <ion-icon slot="icon-only" name="save-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form>
+    <ion-list>
+      
+      <ion-item>
+        <ion-label position="stacked">Name</ion-label>
+        <ion-input autocomplete="off" type="text" name="name" [(ngModel)]="device.name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Topic</ion-label>
+        <ion-input autocomplete="off" type="text" name="topic" [(ngModel)]="device.topic"></ion-input>
+      </ion-item>
+
+    </ion-list>
+  </form>
+</ion-content>

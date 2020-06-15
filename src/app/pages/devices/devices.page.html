@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Devices</ion-title>
+    <ion-buttons slot="secondary">
+      <ion-button (click)="addDevice()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar (ionChange)="onSearchChange($event)"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+      <ion-label>{{ devices.length == 0 ? 'No devices found' : devices.length == 1 ? '1 device in total' : devices.length + ' devices in total' }}</ion-label>
+    </ion-list-header>
+    <ion-card *ngFor="let device of devices" (click)="editDevice(device)">
+      <ion-card-header>
+        <ion-card-title>{{ device.name }}</ion-card-title>
+        <!--ion-card-subtitle>{{ device.id }}</ion-card-subtitle-->
+      </ion-card-header>
+      <!--ion-card-content>
+        <p>{{ getFriendlyType(device.type) }}</p<>
+      </ion-card-content-->
+    </ion-card>
+  </ion-list>
+</ion-content>

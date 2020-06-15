@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Broker</ion-title>
+    <ion-buttons slot="secondary">
+      <!--ion-button (click)="addDevice()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button-->
+      <ion-button (click)="save()">
+        <ion-icon slot="icon-only" name="save-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <!--ion-toolbar>
+    <ion-searchbar (ionChange)="onSearchChange($event)"></ion-searchbar>
+  </ion-toolbar-->
+</ion-header>
+
+<ion-content>
+  <form>
+    <ion-list>
+      
+      <ion-item>
+        <ion-label position="stacked">Name</ion-label>
+        <ion-input autocomplete="off" type="text" name="name" [(ngModel)]="broker.name" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Host</ion-label>
+        <ion-input autocomplete="off" type="url" name="host" [(ngModel)]="broker.connectOptions.hosts[0]" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Port</ion-label>
+        <ion-input autocomplete="off" type="number" name="port" [(ngModel)]="broker.connectOptions.ports[0]" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Protocol</ion-label>
+        <ion-select placeholder="Select protocol" name="protocol" [(ngModel)]="broker.connectOptions.protocol">
+          <ion-select-option value="mqtt">MQTT</ion-select-option>
+          <ion-select-option value="ws">Web sockets</ion-select-option>
+          <ion-select-option value="mqtts">Secure MQTT</ion-select-option>
+          <ion-select-option value="wss">Secure web sockets</ion-select-option>
+          <ion-select-option value="tcp">TCP</ion-select-option>
+          <ion-select-option value="ssl">SSL</ion-select-option>
+          <ion-select-option value="wx">WX</ion-select-option>
+          <ion-select-option value="wxs">WXS</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Client ID</ion-label>
+        <ion-input autocomplete="off" type="text" name="clientId" [(ngModel)]="broker.connectOptions.clientId" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>SSL</ion-label>
+        <ion-toggle [(ngModel)]="broker.connectOptions.useSSL" [ngModelOptions]="{standalone: true}"></ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Username</ion-label>
+        <ion-input autocomplete="off" type="text" name="username" [(ngModel)]="broker.connectOptions.username" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Password</ion-label>
+        <ion-input autocomplete="off" type="password" name="password" [(ngModel)]="broker.connectOptions.password" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+
+    </ion-list>
+  </form>
+</ion-content>

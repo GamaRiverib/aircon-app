@@ -1,0 +1,167 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ device.name }}</ion-title>
+    <ion-buttons slot="secondary">
+      <ion-button (click)="power()">
+        <ion-icon slot="icon-only" name="power-outline" [color]="device.state.power == 'on' ? 'success' : 'danger' "></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
+        <h1 class="device-state-temp ion-text-center">
+          {{ device.state.temp }}
+          <span class="device-state-use_celsius">
+            {{ device.state.use_celsius == 'off' ? '°F' : '°C'  }}
+          </span>
+        </h1>
+      </ion-col>
+      <ion-col size="1"></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" class="ion-align-self-center">
+        <ion-item>
+          <ion-range min="16" max="32" step="1" [value]="device.state.temp">
+            <ion-icon size="smaller" slot="start" name="thermometer-outline" color="blue"></ion-icon>
+            <ion-icon slot="end" name="thermometer-outline" color="orange"></ion-icon>
+          </ion-range>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-align-self-center">
+      <ion-col size="2">
+        <ion-button [color]="device.state.power == 'on' ? 'success' : 'danger' ">
+          <ion-icon slot="icon-only" name="power-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="2">
+        <ion-button [color]="device.state.mode == 'auto' ? 'success' : 'light' ">
+          <!--ion-icon slot="icon-only" name="text-outline"></ion-icon-->
+          Auto
+        </ion-button>
+      </ion-col>
+      <ion-col size="2">
+        <ion-button  [color]="device.state.mode == 'cool' ? 'success' : 'light'">
+          <ion-icon slot="icon-only" name="snow-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="2">
+        <ion-button [color]="device.state.mode == 'heat' ? 'success' : 'light'">
+          <ion-icon slot="icon-only" name="sunny-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="2">
+        <ion-button [color]="device.state.mode == 'dry' ? 'success' : 'light'">
+          <ion-icon slot="icon-only" name="water-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="2">
+        <ion-button name="sync-circle-outline" [color]="device.state.mode == 'fan_only' ? 'success' : 'light'">
+          <ion-icon slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-list>
+    <ion-item>
+      <ion-label>Quiet</ion-label>
+      <ion-toggle [ngModel]="device.state.quiet"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Turbo</ion-label>
+      <ion-toggle [ngModel]="device.state.turbo"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Econo</ion-label>
+      <ion-toggle [ngModel]="device.state.econo"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Light</ion-label>
+      <ion-toggle [ngModel]="device.state.light"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Filter</ion-label>
+      <ion-toggle [ngModel]="device.state.filter"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Clean</ion-label>
+      <ion-toggle [ngModel]="device.state.clean"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Beep</ion-label>
+      <ion-toggle [ngModel]="device.state.beep"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Sleep</ion-label>
+      <ion-toggle [ngModel]="device.state.sleep"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Protocol</ion-label>
+      <ion-select [ngModel]="device.state.protocol">
+        <ion-select-option value="LG">LG</ion-select-option>
+        <ion-select-option value="COOLIX">COOLIX</ion-select-option>
+        <ion-select-option value="DAIKIN">DAIKIN</ion-select-option>
+        <ion-select-option value="KELVINATOR">KELVINATOR</ion-select-option>
+        <ion-select-option value="MITSUBISHI_AC">MITSUBISHI_AC</ion-select-option>
+        <ion-select-option value="GREE">GREE</ion-select-option>
+        <ion-select-option value="ARGO">ARGO</ion-select-option>
+        <ion-select-option value="TROTEC">TROTEC</ion-select-option>
+        <ion-select-option value="TOSHIBA_AC">TOSHIBA_AC</ion-select-option>
+        <ion-select-option value="FUJITSU_AC">FUJITSU_AC</ion-select-option>
+        <ion-select-option value="MIDEA">MIDEA</ion-select-option>
+        <ion-select-option value="HAIER_AC">HAIER_AC</ion-select-option>
+        <ion-select-option value="HITACHI_AC">HITACHI_AC</ion-select-option>
+        <ion-select-option value="HITACHI_AC1">HITACHI_AC1</ion-select-option>
+        <ion-select-option value="HAIER_AC_YRW02">HAIER_AC_YRW02</ion-select-option>
+        <ion-select-option value="WHIRLPOOL_AC">WHIRLPOOL_AC</ion-select-option>
+        <ion-select-option value="SAMSUNG_AC">SAMSUNG_AC</ion-select-option>
+        <ion-select-option value="ELECTRA_AC">ELECTRA_AC</ion-select-option>
+        <ion-select-option value="PANASONIC_AC">PANASONIC_AC</ion-select-option>
+        <ion-select-option value="LG2">LG2</ion-select-option>
+        <ion-select-option value="DAIKIN2">DAIKIN2</ion-select-option>
+        <ion-select-option value="VESTEL_AC">VESTEL_AC</ion-select-option>
+        <ion-select-option value="TECO">TECO</ion-select-option>
+        <ion-select-option value="TCL112AC">TCL112AC</ion-select-option>
+        <ion-select-option value="MITSUBISHI_HEAVY_88">MITSUBISHI_HEAVY_88</ion-select-option>
+        <ion-select-option value="MITSUBISHI_HEAVY_152">MITSUBISHI_HEAVY_152</ion-select-option>
+        <ion-select-option value="DAIKIN216">DAIKIN216</ion-select-option>
+        <ion-select-option value="SHARP_AC">SHARP_AC</ion-select-option>
+        <ion-select-option value="GOODWEATHER">GOODWEATHER</ion-select-option>
+        <ion-select-option value="DAIKIN160">DAIKIN160</ion-select-option>
+        <ion-select-option value="NEOCLIMA">NEOCLIMA</ion-select-option>
+        <ion-select-option value="DAIKIN176">DAIKIN176</ion-select-option>
+        <ion-select-option value="DAIKIN128">DAIKIN128</ion-select-option>
+        <ion-select-option value="AMCOR">AMCOR</ion-select-option>
+        <ion-select-option value="DAIKIN152">DAIKIN152</ion-select-option>
+        <ion-select-option value="MITSUBISHI136">MITSUBISHI136</ion-select-option>
+        <ion-select-option value="MITSUBISHI112">MITSUBISHI112</ion-select-option>
+        <ion-select-option value="HITACHI_AC424">HITACHI_AC424</ion-select-option>
+        <ion-select-option value="DAIKIN64">DAIKIN64</ion-select-option>
+        <ion-select-option value="DELONGHI_AC">DELONGHI_AC</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Model</ion-label>
+      <ion-select [ngModel]="device.state.model">
+        <ion-select-option value="-1">Default</ion-select-option>
+        <ion-select-option value="0">Unknow</ion-select-option>
+        <ion-select-option value="1">1</ion-select-option>
+        <ion-select-option value="2">2</ion-select-option>
+        <ion-select-option value="3">3</ion-select-option>
+        <ion-select-option value="4">4</ion-select-option>
+        <ion-select-option value="5">5</ion-select-option>
+        <ion-select-option value="6">6</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+</ion-content>
