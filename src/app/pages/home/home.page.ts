@@ -195,4 +195,15 @@ export class HomePage implements OnInit, OnDestroy {
     this.router.navigate([ 'devices' ], extras);
   }
 
+  getTempColor(device: Device): string {
+    let celsius = device.state.use_celsius === 'on' ?
+      device.state.temp :  Math.floor((device.state.temp - 32) * (5 / 9));
+    if (celsius < 16) {
+      celsius = 16;
+    } else if (celsius > 32) {
+      celsius = 32;
+    }
+    return `temp-${celsius}`;
+  }
+
 }

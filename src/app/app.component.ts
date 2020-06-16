@@ -63,16 +63,15 @@ export class AppComponent implements OnInit, OnDestroy {
       this.splashScreen.hide();
     });
     this.platform.resume.subscribe(async () => {
-      alert('Resume event detected');
-      // this.mqttService.connect();
+      console.log('app resume');
     });
     this.platform.pause.subscribe(async () => {
-      alert('Pause event detected');
-      this.mqttService.disconnect();
+      console.log('app pause');
     });
   }
 
   async ngOnDestroy(): Promise<void> {
+    console.log('AppComponent destroy');
     this.mqttService.disconnect();
   }
 

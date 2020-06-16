@@ -25,10 +25,16 @@
     </ion-list-header>
     <ion-card *ngFor="let device of devices" (click)="showDevice(device)">
       <ion-card-header>
-        <ion-card-title>{{ device.name }}</ion-card-title>
-        <ion-card-subtitle [color]="device.status == 'Online' ? 'success' : 'danger'">
+        <ion-card-title>
+          <ion-icon 
+            [name]="'radio-button-' + (device.status == 'Online' ? 'on' : 'off')"
+            [color]="device.status == 'Online' ? 'success' : 'danger'">
+          </ion-icon>
+          {{ device.name }}
+        </ion-card-title>
+        <!--ion-card-subtitle [color]="device.status == 'Online' ? 'success' : 'danger'">
           {{ device.status }}
-        </ion-card-subtitle>
+        </ion-card-subtitle-->
       </ion-card-header>
       <ion-card-content *ngIf="device.state">
         <ion-grid>
@@ -42,12 +48,14 @@
               </ion-row>
             </ion-col>
             <ion-col size="4">
-              <h1 class="device-state-temp ion-align-self-start ion-text-left">
-                {{ device.state.temp }} 
-                <span class="device-state-use_celsius">
-                  {{ device.state.use_celsius == 'off' ? '°F' : '°C'  }}
-                </span>
-              </h1>
+              <ion-text [color]="getTempColor(device)">
+                <h1 class="device-state-temp ion-align-self-start ion-text-left">
+                  {{ device.state.temp }} 
+                  <span class="device-state-use_celsius">
+                    {{ device.state.use_celsius == 'off' ? '°F' : '°C'  }}
+                  </span>
+                </h1>
+              </ion-text>
             </ion-col>
           </ion-row>
         </ion-grid>
