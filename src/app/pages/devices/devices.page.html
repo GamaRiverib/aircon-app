@@ -21,10 +21,8 @@
     <ion-list-header>
       <ion-label>{{ devices.length == 0 ? 'No devices found' : devices.length == 1 ? '1 device in total' : devices.length + ' devices in total' }}</ion-label>
     </ion-list-header>
-    <ion-item *ngFor="let device of devices" (click)="editDevice(device)">
-      <ion-avatar slot="start">
-        <ion-icon size="large" name="hardware-chip-outline"></ion-icon>
-      </ion-avatar>
+    <ion-item *ngFor="let device of devices" (click)="editDevice(device)" class="ion-padding-bottom">
+      <ion-icon size="large" slot="start" name="hardware-chip-outline"></ion-icon>
       <ion-label>
         <h1>{{ device.name }}</h1>
       </ion-label>

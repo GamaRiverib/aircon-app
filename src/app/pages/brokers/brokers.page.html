@@ -23,22 +23,22 @@
   <form>
     <ion-list>
       
-      <ion-item>
+      <ion-item class="ion-margin-bottom">
         <ion-label position="stacked">Name</ion-label>
         <ion-input autocomplete="off" type="text" name="name" [(ngModel)]="broker.name" [ngModelOptions]="{standalone: true}"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item class="ion-margin-bottom">
         <ion-label position="stacked">Host</ion-label>
         <ion-input autocomplete="off" type="url" name="host" [(ngModel)]="broker.connectOptions.hosts[0]" [ngModelOptions]="{standalone: true}"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item class="ion-margin-bottom">
         <ion-label position="stacked">Port</ion-label>
         <ion-input autocomplete="off" type="number" name="port" [(ngModel)]="broker.connectOptions.ports[0]" [ngModelOptions]="{standalone: true}"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item class="ion-margin-bottom">
         <ion-label position="stacked">Protocol</ion-label>
         <ion-select placeholder="Select protocol" name="protocol" [(ngModel)]="broker.connectOptions.protocol">
           <ion-select-option value="mqtt">MQTT</ion-select-option>
@@ -52,22 +52,22 @@
         </ion-select>
       </ion-item>
 
-      <ion-item>
+      <ion-item class="ion-margin-bottom">
         <ion-label position="stacked">Client ID</ion-label>
         <ion-input autocomplete="off" type="text" name="clientId" [(ngModel)]="broker.connectOptions.clientId" [ngModelOptions]="{standalone: true}"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item class="ion-margin-bottom">
         <ion-label>SSL</ion-label>
         <ion-toggle [(ngModel)]="broker.connectOptions.useSSL" [ngModelOptions]="{standalone: true}"></ion-toggle>
       </ion-item>
 
-      <ion-item>
+      <ion-item  class="ion-margin-bottom">
         <ion-label position="stacked">Username</ion-label>
         <ion-input autocomplete="off" type="text" name="username" [(ngModel)]="broker.connectOptions.username" [ngModelOptions]="{standalone: true}"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item  class="ion-margin-bottom">
         <ion-label position="stacked">Password</ion-label>
         <ion-input autocomplete="off" type="password" name="password" [(ngModel)]="broker.connectOptions.password" [ngModelOptions]="{standalone: true}"></ion-input>
       </ion-item>

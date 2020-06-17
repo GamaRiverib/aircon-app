@@ -6,20 +6,15 @@
       </ion-button>
     </ion-buttons>
     <ion-title>{{ device.name }}</ion-title>
-    <ion-buttons slot="secondary">
-      <ion-button (click)="power()">
-        <ion-icon slot="icon-only" name="power-outline" [color]="device.state.power == 'on' ? 'success' : 'danger' "></ion-icon>
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <ion-list>
-    <ion-item lines="none">
+    <ion-item lines="none" class="ion-margin-top">
       <ion-grid>
         <ion-row>
           <ion-col size="1"></ion-col>
-          <ion-col *ngIf="device.state.power == 'on'" size="2" class="ion-text-right" style="padding-top: 50px;">
+          <ion-col size="2" *ngIf="device.state.power == 'on'" class="ion-text-right" style="padding-top: 50px;">
             <ion-text *ngIf="device.state.mode == 'auto'">
               <h5>AUTO</h5>
             </ion-text>
@@ -31,9 +26,9 @@
           <ion-col size="8" *ngIf="device.state.power == 'on'">
             <ion-text>
               <h1 class="device-state-temp ion-text-center">
-                {{ device.state.power == 'on' ? device.state.temp : '' }}
+                {{ device.state.temp }}
                 <span class="device-state-use_celsius">
-                  {{ device.state.power == 'on' ? device.state.use_celsius == 'off' ? '°F' : '°C' : '' }}
+                  {{ device.state.use_celsius == 'off' ? '°F' : '°C' }}
                 </span>
               </h1>
             </ion-text>
@@ -49,8 +44,8 @@
         </ion-row>
       </ion-grid>
     </ion-item>
-    <ion-item>
-      <ion-range min="16" max="32" step="1" [value]="device.state.temp" snaps (ionChange)="changeTemp($event)">
+    <ion-item class="ion-margin-top">
+      <ion-range min="16" max="32" step="1" [color]="getTempColor()" [value]="device.state.temp" snaps (ionChange)="changeTemp($event)">
         <ion-icon size="small" slot="start" name="thermometer-outline" color="temp-16"></ion-icon>
         <ion-icon size="large" slot="end" name="thermometer-outline" color="temp-32"></ion-icon>
       </ion-range>
@@ -58,7 +53,7 @@
     <ion-list-header>
       Fan speed
     </ion-list-header>
-    <ion-item>
+    <ion-item class="ion-padding-bottom">
       <ion-grid>
         <ion-row>
           <ion-col size="9" class="ion-align-self-left">
@@ -87,12 +82,7 @@
     <ion-item>
       <ion-grid>
         <ion-row class="ion-text-center">
-          <ion-col size="4">
-            <ion-button size="default" expand="full" [color]="device.state.power == 'on' ? 'success' : 'danger'" (click)="power()">
-              <ion-icon name="power-outline"></ion-icon>
-              &nbsp; Power
-            </ion-button>
-          </ion-col>
+          <ion-col size="2"></ion-col>
           <ion-col size="4">
             <ion-button size="default" expand="full" [color]="device.state.mode == 'auto' ? 'primary' : 'light'" (click)="mode('auto')">
               <ion-icon [src]="device.state.mode == 'auto' ? 'assets/automatic-contrast.svg' : 'assets/automatic.svg'"></ion-icon>
@@ -105,6 +95,7 @@
               &nbsp; Cool
             </ion-button>
           </ion-col>
+          <ion-col size="2"></ion-col>
         </ion-row>
         <ion-row class="ion-text-center">
           <ion-col size="4">
@@ -131,7 +122,7 @@
     <ion-list-header>
       Swing
     </ion-list-header>
-    <ion-item>
+    <ion-item class="ion-margin-bottom">
       <ion-grid>
         <ion-row class="ion-text-center">
           <ion-col size="6">
@@ -157,39 +148,39 @@
         </ion-row>
       </ion-grid>
     </ion-item>
-    <ion-item (click)="quiet()">
+    <ion-item (click)="quiet()" class="ion-margin-bottom">
       <ion-label>Quiet</ion-label>
-      <ion-toggle [ngModel]="device.state.quiet === 'on'"></ion-toggle>
+      <ion-toggle [ngModel]="device.state.quiet === 'on'"></ion-toggle>      
     </ion-item>
-    <ion-item (click)="turbo()">
+    <ion-item (click)="turbo()" class="ion-margin-bottom">
       <ion-label>Turbo</ion-label>
       <ion-toggle [ngModel]="device.state.turbo === 'on'"></ion-toggle>
     </ion-item>
-    <ion-item (click)="econo()">
+    <ion-item (click)="econo()" class="ion-margin-bottom">
       <ion-label>Econo</ion-label>
       <ion-toggle [ngModel]="device.state.econo === 'on'"></ion-toggle>
     </ion-item>
-    <ion-item (click)="light()">
+    <ion-item (click)="light()" class="ion-margin-bottom">
       <ion-label>Light</ion-label>
       <ion-toggle [ngModel]="device.state.light === 'on'"></ion-toggle>
     </ion-item>
-    <ion-item (click)="filter()">
+    <ion-item (click)="filter()" class="ion-margin-bottom">
       <ion-label>Filter</ion-label>
       <ion-toggle [ngModel]="device.state.filter === 'on'"></ion-toggle>
     </ion-item>
-    <ion-item (click)="clean()">
+    <ion-item (click)="clean()" class="ion-margin-bottom">
       <ion-label>Clean</ion-label>
       <ion-toggle [ngModel]="device.state.clean === 'on'"></ion-toggle>
     </ion-item>
-    <ion-item (click)="beep()">
+    <ion-item (click)="beep()" class="ion-margin-bottom">
       <ion-label>Beep</ion-label>
       <ion-toggle [ngModel]="device.state.beep === 'on'"></ion-toggle>
     </ion-item>
-    <ion-item (click)="sleep()">
+    <ion-item (click)="sleep()" class="ion-margin-bottom">
       <ion-label>Sleep</ion-label>
       <ion-toggle [ngModel]="device.state.sleep === 'on'"></ion-toggle>
     </ion-item>
-    <ion-item>
+    <ion-item class="ion-margin-bottom">
       <ion-label>Protocol</ion-label>
       <ion-select [ngModel]="device.state.protocol" (ionChange)="changeProtocol($event)">
         <ion-select-option value="LG">LG</ion-select-option>
@@ -234,7 +225,7 @@
         <ion-select-option value="DELONGHI_AC">DELONGHI_AC</ion-select-option>
       </ion-select>
     </ion-item>
-    <ion-item>
+    <ion-item lines="none" class="ion-margin-bottom">
       <ion-label>Model</ion-label>
       <ion-select [ngModel]="device.state.model" (ionChange)="changeModel($event)">
         <ion-select-option value="-1">Default</ion-select-option>
@@ -249,3 +240,31 @@
     </ion-item>
   </ion-list>
 </ion-content>
+<ion-footer color="light">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button size="large" expand="block" [color]="device.state.power == 'on' ? 'success' : 'danger'" (click)="power()">
+          <ion-icon name="power-outline"></ion-icon>
+          &nbsp; Power
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <ion-button size="large" expand="block" color="light"
+          [disabled]="device.state.power == 'off' || device.state.temp == '16.0'"
+          (click)="tempDown()">
+          <ion-icon name="remove-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button size="large" expand="block" color="light" 
+          [disabled]="device.state.power == 'off' || device.state.temp == '32.0'"
+          (click)="tempUp()">
+          <ion-icon name="add-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

@@ -181,6 +181,56 @@ export class DeviceDetailsComponent implements OnInit {
     return '';
   }
 
+  async tempDown(): Promise<void> {
+    if (this.device.state.temp) {
+      const temp = parseInt(this.device.state.temp.toString(), 10) - 1;
+      if (this.changeTempTimeout !== undefined)  {
+        clearTimeout(this.changeTempTimeout);
+        this.changeTempTimeout = undefined;
+      }
+      const topic = `${this.device.topic}/ac/cmnd/temp`;
+      console.log(topic, temp);
+      try {
+        this.mqttService.unsafePublish(topic, temp.toString());
+      } catch (reason) {
+        console.log(reason);
+        const alert = await this.alertController.create({
+          header: 'MQTT Error',
+          message: `Error trying to publish message to MQTT server. Please try again.`,
+          buttons: ['OK']
+        });
+        alert.present();
+      } finally {
+        this.changeTempTimeout = undefined;
+      }
+    }
+  }
+
+  async tempUp(): Promise<void> {
+    if (this.device.state.temp) {
+      const temp = parseInt(this.device.state.temp.toString(), 10) + 1;
+      if (this.changeTempTimeout !== undefined)  {
+        clearTimeout(this.changeTempTimeout);
+        this.changeTempTimeout = undefined;
+      }
+      const topic = `${this.device.topic}/ac/cmnd/temp`;
+      console.log(topic, temp);
+      try {
+        this.mqttService.unsafePublish(topic, temp.toString());
+      } catch (reason) {
+        console.log(reason);
+        const alert = await this.alertController.create({
+          header: 'MQTT Error',
+          message: `Error trying to publish message to MQTT server. Please try again.`,
+          buttons: ['OK']
+        });
+        alert.present();
+      } finally {
+        this.changeTempTimeout = undefined;
+      }
+    }
+  }
+
   changeTemp(e: { detail: { value: number } }): void {
     if (this.changeTempTimeout !== undefined) {
       clearTimeout(this.changeTempTimeout);
