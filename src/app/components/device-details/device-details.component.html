@@ -19,13 +19,31 @@
       <ion-grid>
         <ion-row>
           <ion-col size="1"></ion-col>
-          <ion-col size="10">
-            <h1 class="device-state-temp ion-text-center">
-              {{ device.state.temp }}
-              <span class="device-state-use_celsius">
-                {{ device.state.use_celsius == 'off' ? '°F' : '°C'  }}
-              </span>
-            </h1>
+          <ion-col *ngIf="device.state.power == 'on'" size="2" class="ion-text-right" style="padding-top: 50px;">
+            <ion-text *ngIf="device.state.mode == 'auto'">
+              <h5>AUTO</h5>
+            </ion-text>
+            <ion-icon *ngIf="device.state.mode == 'cool'" size="large" name="snow-outline"></ion-icon>
+            <ion-icon *ngIf="device.state.mode == 'heat'" size="large" name="sunny-outline"></ion-icon>
+            <ion-icon *ngIf="device.state.mode == 'dry'" size="large" name="water-outline"></ion-icon>
+            <ion-icon *ngIf="device.state.mode == 'fan_only'" size="large" name="sync-circle-outline"></ion-icon>
+          </ion-col>
+          <ion-col size="8" *ngIf="device.state.power == 'on'">
+            <ion-text>
+              <h1 class="device-state-temp ion-text-center">
+                {{ device.state.power == 'on' ? device.state.temp : '' }}
+                <span class="device-state-use_celsius">
+                  {{ device.state.power == 'on' ? device.state.use_celsius == 'off' ? '°F' : '°C' : '' }}
+                </span>
+              </h1>
+            </ion-text>
+          </ion-col>
+          <ion-col size="10" *ngIf="device.state.power == 'off'">
+            <ion-text>
+              <h1 class="device-state-temp ion-text-center">
+                --
+              </h1>
+            </ion-text>
           </ion-col>
           <ion-col size="1"></ion-col>
         </ion-row>

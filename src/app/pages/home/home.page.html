@@ -29,7 +29,7 @@
       <ion-card-content *ngIf="device.state">
         <ion-grid>
           <ion-row>
-            <ion-col size="6">
+            <ion-col size="4">
               <ion-row>
                 <h4>Power: <b class="ion-text-uppercase">{{ device.state.power || '--'  }}</b></h4>
               </ion-row>
@@ -37,9 +37,12 @@
                 <h4>Mode: <b class="ion-text-uppercase">{{ device.state.mode || '--' }}</b></h4>
               </ion-row>
             </ion-col>
+            <ion-col size="2" class="ion-text-right" style="margin-top: 5px;">
+              <ion-icon size="large" name="thermometer-outline"></ion-icon>
+            </ion-col>
             <ion-col size="6">
-              <ion-text [color]="getTempColor(device)">
-                <h1 class="device-state-temp ion-align-self-start ion-text-left">
+              <ion-text>
+                <h1 class="device-state-temp ion-text-left">
                   {{ device.state.temp }} 
                   <span class="device-state-use_celsius">
                     {{ device.state.use_celsius == 'off' ? '°F' : '°C'  }}

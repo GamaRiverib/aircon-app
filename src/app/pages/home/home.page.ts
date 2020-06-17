@@ -208,14 +208,24 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   getTempColor(device: Device): string {
-    let celsius = device.state.use_celsius === 'on' ?
-      device.state.temp :  Math.floor((device.state.temp - 32) * (5 / 9));
-    if (celsius < 16) {
-      celsius = 16;
-    } else if (celsius > 32) {
-      celsius = 32;
+    if (device.state.temp) {
+      let celsius: number;
+      if (device.state.use_celsius) {
+        celsius = device.state.use_celsius === 'on' ?
+          device.state.temp : Math.trunc((device.state.temp - 32) * (5 / 9));
+      } else if (device.state.temp > 32) {
+        celsius = Math.trunc((device.state.temp - 32) * (5 / 9));
+      } else {
+        celsius = Math.trunc(device.state.temp);
+      }
+      if (celsius < 16) {
+        celsius = 16;
+      } else if (celsius > 32) {
+        celsius = 32;
+      }
+      return `temp-${celsius}`;
     }
-    return `temp-${celsius}`;
+    return '';
   }
 
 }

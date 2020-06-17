@@ -161,14 +161,24 @@ export class DeviceDetailsComponent implements OnInit {
   }
 
   getTempColor(): string {
-    let celsius = this.device.state.use_celsius === 'on' ?
-      this.device.state.temp : Math.floor((this.device.state.temp - 32) * (5 / 9));
-    if (celsius < 16) {
-      celsius = 16;
-    } else if (celsius > 32) {
-      celsius = 32;
+    if (this.device.state.temp) {
+      let celsius: number;
+      if (this.device.state.use_celsius) {
+        celsius = this.device.state.use_celsius === 'on' ?
+          this.device.state.temp : Math.trunc((this.device.state.temp - 32) * (5 / 9));
+      } else if (this.device.state.temp > 32) {
+        celsius = Math.trunc((this.device.state.temp - 32) * (5 / 9));
+      } else {
+        celsius = Math.trunc(this.device.state.temp);
+      }
+      if (celsius < 16) {
+        celsius = 16;
+      } else if (celsius > 32) {
+        celsius = 32;
+      }
+      return `temp-${celsius}`;
     }
-    return `temp-${celsius}`;
+    return '';
   }
 
   changeTemp(e: { detail: { value: number } }): void {
