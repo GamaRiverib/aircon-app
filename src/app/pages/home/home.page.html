@@ -1,9 +1,9 @@
 <ion-header translucent>
-  <ion-toolbar color="dark">
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Home</ion-title>
+    <ion-title>Aircon</ion-title>
     <ion-buttons slot="secondary">
       <ion-button (clic)="connect()">
         <ion-icon slot="icon-only" [name]="(online ? 'cloud' : 'cloud-offline') + '-outline' " [color]="online ? 'success' : 'danger'"></ion-icon>
@@ -13,16 +13,9 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-toolbar>
-    <ion-searchbar (ionChange)="onSearchChange($event)"></ion-searchbar>
-  </ion-toolbar>
 </ion-header>
-
 <ion-content>
   <ion-list>
-    <ion-list-header>
-      <ion-label>{{ devices.length == 0 ? 'No devices found' : devices.length == 1 ? '1 device in total' : devices.length + ' devices in total' }}</ion-label>
-    </ion-list-header>
     <ion-card *ngFor="let device of devices" (click)="showDevice(device)">
       <ion-card-header>
         <ion-card-title>
@@ -32,14 +25,11 @@
           </ion-icon>
           {{ device.name }}
         </ion-card-title>
-        <!--ion-card-subtitle [color]="device.status == 'Online' ? 'success' : 'danger'">
-          {{ device.status }}
-        </ion-card-subtitle-->
       </ion-card-header>
       <ion-card-content *ngIf="device.state">
         <ion-grid>
           <ion-row>
-            <ion-col size="8">
+            <ion-col size="6">
               <ion-row>
                 <h4>Power: <b class="ion-text-uppercase">{{ device.state.power || '--'  }}</b></h4>
               </ion-row>
@@ -47,7 +37,7 @@
                 <h4>Mode: <b class="ion-text-uppercase">{{ device.state.mode || '--' }}</b></h4>
               </ion-row>
             </ion-col>
-            <ion-col size="4">
+            <ion-col size="6">
               <ion-text [color]="getTempColor(device)">
                 <h1 class="device-state-temp ion-align-self-start ion-text-left">
                   {{ device.state.temp }} 

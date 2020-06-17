@@ -1,15 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
-import { ToastController, AlertController, ModalController } from '@ionic/angular';
+import { ToastController, AlertController, ModalController, Platform } from '@ionic/angular';
 import { MqttService, IMqttServiceOptions, IMqttMessage,
          IOnConnectEvent, IOnErrorEvent } from 'ngx-mqtt';
+import { Subscription } from 'rxjs';
+import { AppMinimize } from '@ionic-native/app-minimize/ngx';
 import { DevicesRepository } from '../../repositories/devices.repository';
 import { SettingsService } from '../../services/settings.service';
 import { BrokersRepository } from '../../repositories/brokers.repository';
 import { Device } from '../../models/device';
 import { Broker } from '../../models/broker';
-import { Subscription } from 'rxjs';
-import { DeviceDetailsComponent } from 'src/app/components/device-details/device-details.component';
+import { DeviceDetailsComponent } from '../../components/device-details/device-details.component';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +23,7 @@ export class HomePage implements OnInit, OnDestroy {
   private devices: Array<Device> = [];
   private subscriptions: Array<Subscription> = [];
   private reconnectCount = 0;
+  private backButtonSubscription: Subscription | undefined;
 
   constructor(
     private devicesRepository: DevicesRepository,
@@ -31,7 +33,29 @@ export class HomePage implements OnInit, OnDestroy {
     private toastController: ToastController,
     private alertController: AlertController,
     private modalController: ModalController,
+    private appMinimize: AppMinimize,
+    private platform: Platform,
     private router: Router) { }
+
+  async ngOnDestroy(): Promise<void> {
+    console.log('Unsubscribing...');
+    if (this.backButtonSubscription !== undefined) {
+      this.backButtonSubscription.unsubscribe();
+    }
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    console.log('Disconnecting from MQTT...');
+    this.mqttService.disconnect();
+  }
+
+  async ngOnInit() {
+    this.backButtonSubscription =
+      this.platform.backButton.subscribe(() => {
+        console.log('Minimize app');
+        this.appMinimize.minimize();
+      });
+    this.getDevices();
+    this.connect();
+  }
 
   private async getDevices(): Promise<void> {
     try {
@@ -146,18 +170,6 @@ export class HomePage implements OnInit, OnDestroy {
         }
       }
     }
-  }
-
-  async ngOnDestroy(): Promise<void> {
-    console.log('Unsubscribing...');
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-    console.log('Disconnecting from MQTT...');
-    this.mqttService.disconnect();
-  }
-
-  async ngOnInit() {
-    this.getDevices();
-    this.connect();
   }
 
   onSearchChange(ev: any) {

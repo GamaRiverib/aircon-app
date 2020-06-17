@@ -43,17 +43,21 @@
     <ion-item>
       <ion-grid>
         <ion-row>
-          <ion-col size="10" class="ion-align-self-center">
+          <ion-col size="9" class="ion-align-self-left">
             <ion-item lines="none">
-              <ion-range min="1" max="5" step="1" [value]="getFanspeed2Number()" snaps (ionChange)="changeFanspeed($event)">
+              <ion-range min="0" max="5" step="1" [value]="getFanspeed2Number()" snaps (ionChange)="changeFanspeed($event)">
                 <ion-icon size="small" slot="start" name="sync-circle-outline"></ion-icon>
                 <ion-icon size="large" slot="end" name="sync-circle-outline"></ion-icon>
               </ion-range>
             </ion-item>
           </ion-col>
-          <ion-col size="2" class="ion-align-self-center">
-            <ion-button class="device-state-fanspeed-auto" [color]="device.state.fanspeed == 'Auto' ? 'primary' : 'light'" (click)="fanspeed('auto')">
-              Auto
+          <ion-col size="3" class="ion-align-self-left">
+            <ion-button class="device-state-fanspeed-auto"
+              [color]="device.state.fanspeed == 'Auto' ? 'primary' : 'light'"
+              size="default"
+              (click)="fanspeed('Auto')">
+              <ion-icon slot="icon-only" [src]="device.state.fanspeed == 'Auto' ? 'assets/automatic-contrast.svg' : 'assets/automatic.svg'"></ion-icon>
+              &nbsp; Auto
             </ion-button>
           </ion-col>
         </ion-row>
@@ -64,35 +68,43 @@
     </ion-list-header>
     <ion-item>
       <ion-grid>
-        <ion-row class="ion-align-self-center">
-          <ion-col size="2">
-            <ion-button [color]="device.state.power == 'on' ? 'success' : 'danger'" (click)="power()">
-              <ion-icon slot="icon-only" name="power-outline"></ion-icon>
+        <ion-row class="ion-text-center">
+          <ion-col size="4">
+            <ion-button size="default" expand="full" [color]="device.state.power == 'on' ? 'success' : 'danger'" (click)="power()">
+              <ion-icon name="power-outline"></ion-icon>
+              &nbsp; Power
             </ion-button>
           </ion-col>
-          <ion-col size="2">
-            <ion-button class="device-state-mode-auto" [color]="device.state.mode == 'auto' ? 'primary' : 'light'" (click)="mode('auto')">
-              Auto<br/>
+          <ion-col size="4">
+            <ion-button size="default" expand="full" [color]="device.state.mode == 'auto' ? 'primary' : 'light'" (click)="mode('auto')">
+              <ion-icon [src]="device.state.mode == 'auto' ? 'assets/automatic-contrast.svg' : 'assets/automatic.svg'"></ion-icon>
+              &nbsp; Auto
             </ion-button>
           </ion-col>
-          <ion-col size="2">
-            <ion-button  [color]="device.state.mode == 'cool' ? 'primary' : 'light'" (click)="mode('cool')">
-              <ion-icon slot="icon-only" name="snow-outline"></ion-icon>
+          <ion-col size="4">
+            <ion-button size="default" expand="full" [color]="device.state.mode == 'cool' ? 'primary' : 'light'" (click)="mode('cool')">
+              <ion-icon name="snow-outline"></ion-icon>
+              &nbsp; Cool
             </ion-button>
           </ion-col>
-          <ion-col size="2">
-            <ion-button [color]="device.state.mode == 'heat' ? 'primary' : 'light'" (click)="mode('heat')">
-              <ion-icon slot="icon-only" name="sunny-outline"></ion-icon>
+        </ion-row>
+        <ion-row class="ion-text-center">
+          <ion-col size="4">
+            <ion-button size="default" expand="full" [color]="device.state.mode == 'heat' ? 'primary' : 'light'" (click)="mode('heat')">
+              <ion-icon name="sunny-outline"></ion-icon>
+              &nbsp; Heat
             </ion-button>
           </ion-col>
-          <ion-col size="2">
-            <ion-button [color]="device.state.mode == 'dry' ? 'primary' : 'light'" (click)="mode('dry')">
-              <ion-icon slot="icon-only" name="water-outline"></ion-icon>
+          <ion-col size="4">
+            <ion-button size="default" expand="full" [color]="device.state.mode == 'dry' ? 'primary' : 'light'" (click)="mode('dry')">
+              <ion-icon name="water-outline"></ion-icon>
+              &nbsp; Dry
             </ion-button>
           </ion-col>
-          <ion-col size="2">
-            <ion-button [color]="device.state.mode == 'fan_only' ? 'primary' : 'light'" (click)="mode('fan_only')">
-              <ion-icon slot="icon-only" name="sync-circle-outline"></ion-icon>
+          <ion-col size="4">
+            <ion-button size="default" expand="full" [color]="device.state.mode == 'fan_only' ? 'primary' : 'light'" (click)="mode('fan_only')">
+              <ion-icon name="sync-circle-outline"></ion-icon>
+              &nbsp; Fan
             </ion-button>
           </ion-col>
         </ion-row>
@@ -103,43 +115,27 @@
     </ion-list-header>
     <ion-item>
       <ion-grid>
-        <ion-row>
-          <ion-col size="2"></ion-col>
-          <ion-col size="4" class="ion-text-center">
-            Vertical
-          </ion-col>
-          <ion-col size="4" class="ion-text-center">
-            Horizontal
-          </ion-col>
-          <ion-col size="2"></ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="2"></ion-col>
-          <ion-col size="4" class="ion-text-center">
-            <ion-button (click)="swingv()">
-              <ion-icon slot="icon-only" 
-                name="swap-vertical-outline"
-                [color]="(device.state.swingv == 'Off' || !device.state.swingv) ? 'light' : 'primary'"></ion-icon>
+        <ion-row class="ion-text-center">
+          <ion-col size="6">
+            <ion-button
+              size="default"
+              expand="full"
+              [color]="(device.state.swingv == 'Off' || !device.state.swingv) ? 'light' : 'primary'"
+              (click)="swingv()">
+                <ion-icon name="swap-vertical-outline"></ion-icon>
+                &nbsp; {{ device.state.swingv || 'Off' }}
             </ion-button>
           </ion-col>
-          <ion-col size="4" class="ion-text-center">
-            <ion-button (click)="swingh()">
-              <ion-icon slot="icon-only"
-                name="swap-horizontal-outline"
-                [color]="(device.state.swingh == 'Off' || !device.state.swingh) ? 'light' : 'primary'"></ion-icon>
+          <ion-col size="6">
+            <ion-button 
+                size="default"
+                expand="full"
+                [color]="(device.state.swingh == 'Off' || !device.state.swingh) ? 'light' : 'primary'"
+                (click)="swingh()">
+                <ion-icon name="swap-horizontal-outline"></ion-icon>
+                &nbsp; {{ device.state.swingh || 'Off' }}
             </ion-button>
           </ion-col>
-          <ion-col size="2"></ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="2"></ion-col>
-          <ion-col size="4" class="ion-text-center">
-            {{ device.state.swingv || 'Off' }}
-          </ion-col>
-          <ion-col size="4" class="ion-text-center">
-            {{ device.state.swingh || 'Off' }}
-          </ion-col>
-          <ion-col size="2"></ion-col>
         </ion-row>
       </ion-grid>
     </ion-item>

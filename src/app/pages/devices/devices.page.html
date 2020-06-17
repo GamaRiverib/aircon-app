@@ -21,14 +21,13 @@
     <ion-list-header>
       <ion-label>{{ devices.length == 0 ? 'No devices found' : devices.length == 1 ? '1 device in total' : devices.length + ' devices in total' }}</ion-label>
     </ion-list-header>
-    <ion-card *ngFor="let device of devices" (click)="editDevice(device)">
-      <ion-card-header>
-        <ion-card-title>{{ device.name }}</ion-card-title>
-        <!--ion-card-subtitle>{{ device.id }}</ion-card-subtitle-->
-      </ion-card-header>
-      <!--ion-card-content>
-        <p>{{ getFriendlyType(device.type) }}</p<>
-      </ion-card-content-->
-    </ion-card>
+    <ion-item *ngFor="let device of devices" (click)="editDevice(device)">
+      <ion-avatar slot="start">
+        <ion-icon size="large" name="hardware-chip-outline"></ion-icon>
+      </ion-avatar>
+      <ion-label>
+        <h1>{{ device.name }}</h1>
+      </ion-label>
+    </ion-item>
   </ion-list>
 </ion-content>

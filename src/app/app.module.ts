@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { MqttModule } from 'ngx-mqtt';
+import { AppMinimize } from '@ionic-native/app-minimize/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,6 +26,7 @@ import { MqttModule } from 'ngx-mqtt';
     StatusBar,
     SplashScreen,
     NativeStorage,
+    AppMinimize,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

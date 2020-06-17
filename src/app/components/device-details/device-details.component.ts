@@ -12,16 +12,15 @@ export class DeviceDetailsComponent implements OnInit {
 
   @Input() device: Device;
 
+  private changeTempTimeout: NodeJS.Timeout | undefined;
+  private changeFanspeedTimeout: NodeJS.Timeout | undefined;
+
   constructor(
     private modalController: ModalController,
     private alertController: AlertController,
     private mqttService: MqttService) { }
 
   ngOnInit() {}
-
-  private f2c(f: number): number {
-    return Math.floor((f - 32) * (5 / 9));
-  }
 
   dismiss() {
     this.modalController.dismiss({ }, 'close');
@@ -33,6 +32,9 @@ export class DeviceDetailsComponent implements OnInit {
     console.log(topic, payload);
     try {
       this.mqttService.unsafePublish(topic, payload);
+      if (this.device.state.mode === 'off') {
+        this.mode('cool');
+      }
     } catch (reason) {
       console.log(reason);
       const alert = await this.alertController.create({
@@ -125,30 +127,42 @@ export class DeviceDetailsComponent implements OnInit {
     }
   }
 
-  async changeFanspeed(e: { detail: { value: number } }): Promise<void> {
+  fanspeed(swing: Swing) {
+    const value = this.getSwing2Number(swing);
+    this.changeFanspeed({ detail: { value } });
+  }
+
+  changeFanspeed(e: { detail: { value: number } }): void {
     const newFanspeed = e.detail.value;
     const currentFanspeed = this.getFanspeed2Number();
     if (newFanspeed !== currentFanspeed) {
-      const payload = this.getNumber2Fanspeed(newFanspeed);
-      const topic = `${this.device.topic}/ac/cmnd/fanspeed`;
-      console.log(topic, payload);
-      try {
-        this.mqttService.unsafePublish(topic, payload);
-      } catch (reason) {
-        console.log(reason);
-        const alert = await this.alertController.create({
-          header: 'MQTT Error',
-          message: `Error trying to publish message to MQTT server. Please try again.`,
-          buttons: ['OK']
-        });
-        alert.present();
+      if (this.changeFanspeedTimeout !== undefined) {
+        clearTimeout(this.changeFanspeedTimeout);
       }
+      this.changeFanspeedTimeout = setTimeout(async () => {
+        const payload = this.getNumber2Fanspeed(newFanspeed);
+        const topic = `${this.device.topic}/ac/cmnd/fanspeed`;
+        console.log(topic, payload);
+        try {
+          this.mqttService.unsafePublish(topic, payload);
+        } catch (reason) {
+          console.log(reason);
+          const alert = await this.alertController.create({
+            header: 'MQTT Error',
+            message: `Error trying to publish message to MQTT server. Please try again.`,
+            buttons: ['OK']
+          });
+          alert.present();
+        } finally {
+          this.changeFanspeedTimeout = undefined;
+        }
+      }, 500);
     }
   }
 
   getTempColor(): string {
     let celsius = this.device.state.use_celsius === 'on' ?
-      this.device.state.temp : this.f2c(this.device.state.temp);
+      this.device.state.temp : Math.floor((this.device.state.temp - 32) * (5 / 9));
     if (celsius < 16) {
       celsius = 16;
     } else if (celsius > 32) {
@@ -157,24 +171,31 @@ export class DeviceDetailsComponent implements OnInit {
     return `temp-${celsius}`;
   }
 
-  async changeTemp(e: { detail: { value: number } }): Promise<void> {
-    const newTemp = e.detail.value;
-    const currentTemp = parseInt(this.device.state.temp.toString(), 10);
-    if (newTemp !== currentTemp) {
-      const topic = `${this.device.topic}/ac/cmnd/temp`;
-      console.log(topic, newTemp);
-      try {
-        this.mqttService.unsafePublish(topic, newTemp.toString());
-      } catch (reason) {
-        console.log(reason);
-        const alert = await this.alertController.create({
-          header: 'MQTT Error',
-          message: `Error trying to publish message to MQTT server. Please try again.`,
-          buttons: ['OK']
-        });
-        alert.present();
-      }
+  changeTemp(e: { detail: { value: number } }): void {
+    if (this.changeTempTimeout !== undefined) {
+      clearTimeout(this.changeTempTimeout);
     }
+    this.changeTempTimeout = setTimeout(async () => {
+      const newTemp = e.detail.value;
+      const currentTemp = parseInt(this.device.state.temp.toString(), 10);
+      if (newTemp !== currentTemp) {
+        const topic = `${this.device.topic}/ac/cmnd/temp`;
+        console.log(topic, newTemp);
+        try {
+          this.mqttService.unsafePublish(topic, newTemp.toString());
+        } catch (reason) {
+          console.log(reason);
+          const alert = await this.alertController.create({
+            header: 'MQTT Error',
+            message: `Error trying to publish message to MQTT server. Please try again.`,
+            buttons: ['OK']
+          });
+          alert.present();
+        } finally {
+          this.changeTempTimeout = undefined;
+        }
+      }
+    }, 500);
   }
 
   async mode(mode: Mode): Promise<void> {

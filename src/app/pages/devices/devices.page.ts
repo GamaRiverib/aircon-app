@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ToastController, ModalController, AlertController } from '@ionic/angular';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ToastController, ModalController, AlertController, NavController, Platform } from '@ionic/angular';
 import { Router, Navigation } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { DevicesRepository } from '../../repositories/devices.repository';
 import { Device } from '../../models/device';
 import { EditDeviceComponent } from '../../components/edit-device/edit-device.component';
@@ -10,8 +11,9 @@ import { EditDeviceComponent } from '../../components/edit-device/edit-device.co
   templateUrl: './devices.page.html',
   styleUrls: ['./devices.page.scss'],
 })
-export class DevicesPage implements OnInit {
+export class DevicesPage implements OnInit, OnDestroy {
 
+  private backButtonSubscription: Subscription | undefined;
   private all: Array<Device> = [];
   private devices: Array<Device> = [];
   message = '';
@@ -21,6 +23,8 @@ export class DevicesPage implements OnInit {
     private modalController: ModalController,
     private toastController: ToastController,
     private alertController: AlertController,
+    private navController: NavController,
+    private platform: Platform,
     private router: Router) {
       const navigation: Navigation = this.router.getCurrentNavigation();
       if (navigation.extras.state) {
@@ -28,27 +32,35 @@ export class DevicesPage implements OnInit {
           this.addDevice();
         }
       }
-    }
-
-    private async getDevices(): Promise<void> {
-      this.message = '';
-      try {
-        this.all = await this.devicesRepository.getAll();
-        this.devices = this.all;
-        console.log('Devices', this.devices);
-      } catch (error) {
-        this.message = 'An error occurred while trying to get the device list';
-        const toast = await this.toastController.create({
-          message: 'Something was wrong',
-          duration: 2000,
-          position: 'bottom'
-        });
-        toast.present();
-      }
-    }
+  }
 
   async ngOnInit() {
+    this.backButtonSubscription =
+      this.platform.backButton.subscribe(() => this.navController.back());
     this.getDevices();
+  }
+
+  async ngOnDestroy() {
+    if (this.backButtonSubscription !== undefined) {
+      this.backButtonSubscription.unsubscribe();
+    }
+  }
+
+  private async getDevices(): Promise<void> {
+    this.message = '';
+    try {
+      this.all = await this.devicesRepository.getAll();
+      this.devices = this.all;
+      console.log('Devices', this.devices);
+    } catch (error) {
+      this.message = 'An error occurred while trying to get the device list';
+      const toast = await this.toastController.create({
+        message: 'Something was wrong',
+        duration: 2000,
+        position: 'bottom'
+      });
+      toast.present();
+    }
   }
 
   onSearchChange(ev: any) {
