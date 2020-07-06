@@ -47,7 +47,7 @@
             </ion-col>
           </ion-row>
           <ion-row>
-            <ion-col size="2" class="ion-text-center" style="margin-top: 5px;">
+            <ion-col size="2" class="ion-text-center" style="margin-top: 5px;" (click)="powerDevice($event, device)">
               <ion-icon size="large" name="power-outline" [color]="device.state.power == 'on' ? 'success' : 'danger' "></ion-icon>
             </ion-col>
             <ion-col size="2" class="ion-text-center" style="margin-top: 5px;">

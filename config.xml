@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="dev.gamarivera.aircon" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Aircon</name>
     <description>Controls air conditioning, through a MQTT bridge based on IRMQTTServer from the IRremoteESP8266 project.</description>
     <author email="gama.rivera@gmail.com" href="http://gamarivera.dev">Gama Rivera</author>

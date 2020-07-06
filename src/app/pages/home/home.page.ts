@@ -48,11 +48,11 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.backButtonSubscription =
-      this.platform.backButton.subscribe(() => {
-        console.log('Minimize app');
-        this.appMinimize.minimize();
-      });
+    if (this.platform.is('android')) {
+      this.backButtonSubscription =
+      this.platform.backButton
+        .subscribe(() => this.appMinimize.minimize());
+    }
     this.getDevices();
     this.connect();
   }
@@ -130,7 +130,7 @@ export class HomePage implements OnInit, OnDestroy {
   async onReconnect(): Promise<void> {
     this.reconnectCount++;
     console.log(`MQTT Reconnecting (${this.reconnectCount})...`);
-    if (this.reconnectCount > 10) {
+    if (this.reconnectCount > 20) {
       this.mqttService.disconnect();
       this.reconnectCount = 0;
     }
@@ -200,6 +200,41 @@ export class HomePage implements OnInit, OnDestroy {
       // TODO
     });
     return await modal.present();
+  }
+
+  async powerDevice(event: Event, device: Device): Promise<void> {
+    event.preventDefault();
+    event.stopPropagation();
+    const payload = device.state.power === 'on' ? 'off' : 'on';
+    const topic = `${device.topic}/ac/cmnd/power`;
+    console.log(topic, payload);
+    try {
+      this.mqttService.unsafePublish(topic, payload);
+      if (device.state.mode === 'off') {
+        const mode = 'cool';
+        const modeTopic = `${device.topic}/ac/cmnd/mode`;
+        console.log(modeTopic, mode);
+        try {
+          this.mqttService.unsafePublish(modeTopic, mode);
+        } catch (reason) {
+          console.log(reason);
+          const alert = await this.alertController.create({
+            header: 'MQTT Error',
+            message: `Error trying to publish message to MQTT server. Please try again.`,
+            buttons: ['OK']
+          });
+          alert.present();
+        }
+      }
+    } catch (reason) {
+      console.log(reason);
+      const alert = await this.alertController.create({
+        header: 'MQTT Error',
+        message: `Error trying to publish message to MQTT server. Please try again.`,
+        buttons: ['OK']
+      });
+      alert.present();
+    }
   }
 
   async addDevice(): Promise<void> {
